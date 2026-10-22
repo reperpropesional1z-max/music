@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Music Player</title>
+
+<style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #090919, #42106b, #071e43);
+  font-family: Arial, sans-serif;
+  color: white;
+}
+
+.player {
+  width: 300px;
+  padding: 25px;
+  text-align: center;
+  border-radius: 25px;
+  background: #ffffff18;
+  border: 1px solid #ffffff40;
+  box-shadow: 0 0 30px #8b5cf6;
+}
+
+.cover {
+  width: 180px;
+  height: 180px;
+  margin: auto;
+  border-radius: 50%;
+  background: conic-gradient(
+    #ff00cc, #3333ff, #00ffff, #ff00cc
+  );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 65px;
+}
+
+.playing {
+  animation: spin 5s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+button {
+  border: none;
+  border-radius: 20px;
+  padding: 12px 16px;
+  margin: 5px;
+  background: #a855f7;
+  color: white;
+  font-weight: bold;
+}
+
+input { width: 100%; margin-top: 15px; }
+</style>
+</head>
+
+<body>
+<div class="player">
+  <div class="cover" id="cover">🎵</div>
+  <h2>MY MUSIC</h2>
+  <p>Pemutar Musik Keren</p>
+
+  <input type="file" id="file" accept="audio/*">
+  <br><br>
+
+  <button onclick="playMusic()">▶ Play</button>
+  <button onclick="pauseMusic()">⏸ Pause</button>
+  <button onclick="stopMusic()">⏹ Stop</button>
+
+  <input type="range" id="volume"
+         min="0" max="1" step="0.01" value="1">
+
+  <audio id="audio"></audio>
+</div>
+
+<script>
+const audio = document.getElementById("audio");
+const file = document.getElementById("file");
+const cover = document.getElementById("cover");
+
+file.onchange = function() {
+  if (this.files.length) {
+    audio.src = URL.createObjectURL(this.files[0]);
+    audio.load();
+  }
+};
+
+function playMusic() {
+  if (!audio.src) {
+    alert("Pilih file musik terlebih dahulu!");
+    return;
+  }
+  audio.play();
+  cover.classList.add("playing");
+}
+
+function pauseMusic() {
+  audio.pause();
+  cover.classList.remove("playing");
+}
+
+function stopMusic() {
+  audio.pause();
+  audio.currentTime = 0;
+  cover.classList.remove("playing");
+}
+
+document.getElementById("volume").oninput = function() {
+  audio.volume = this.value;
+};
+</script>
+</body>
+</html>
+
